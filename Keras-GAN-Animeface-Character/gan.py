@@ -214,12 +214,18 @@ def train_gan( dataf ) :
     #load_weights(gen, Args.genw)
     #load_weights(disc, Args.discw)
 
-    logger = CSVLogger('loss.csv') # yeah, you can use callbacks independently
-    logger.on_train_begin() # initialize csv file
-    with h5py.File( dataf, 'r' ) as f :
+    #logger = CSVLogger('loss.csv') # yeah, you can use callbacks independently
+    # logger.on_train_begin() # initialize csv file
+
+    # CSVLogger doesn't work standalone, use standard files
+    with open("loss.csv", "w") as logger:
+        logger.write("batch, d_loss0, d_loss1, g_loss\n")
+
+    # buffering = 1 to flush to file after every line.
+    with h5py.File( dataf, 'r' ) as f, open("loss.csv", "a", buffering=1) as logger :
         faces = f.get( 'faces' )
         run_batches(gen, disc, gan, faces, logger, range(5000))
-    logger.on_train_end()
+    # logger.on_train_end()
 
 
 
@@ -272,7 +278,8 @@ def run_batches(gen, disc, gan, faces, logger, itr_generator):
         if batch % 10 == 0 and batch != 0 :
             end_of_batch_task(batch, gen, disc, reals, fakes)
             row = {"d_loss0": d_loss0, "d_loss1": d_loss1, "g_loss": g_loss}
-            logger.on_epoch_end(batch, row)
+            logger.write("{}, {}, {}, {}\n".format(batch, d_loss0, d_loss1, g_loss))
+            #logger.on_epoch_end(batch, row
 
 
 
