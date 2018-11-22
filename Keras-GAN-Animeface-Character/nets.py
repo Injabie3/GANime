@@ -120,15 +120,31 @@ def build_gen( shape ) :
     # https://github.com/tdrussell/IllustrationGAN  z predictor...?
     # might help. Not sure.
 
+    # 01. Build input layer.
     noise = Input( shape=Args.noise_shape )
     x = noise
     # 1x1x256
     # noise is not useful for generating images.
 
-    x= Conv2DTranspose( 512, (4, 4),
+    # 02. Run the input through 2D Convolution, with:
+    # - 512 output filters
+    # - Use a 4 x 4 kernel
+    # and use the kernel_initializer from args.py, which is currently
+    # using "glorot_uniform".
+    x = Conv2DTranspose( 512, (4, 4),
         kernel_initializer=Args.kernel_initializer )(x)
+
+    # 03. Add another layer, this time we normalize, keep the activation
+    # mean close to 0 and standard deviation close to 1.
     x = BatchNormalization(momentum=Args.bn_momentum)( x )
+
+    # 04. Add another layer for Leaky ReLU, and is recommended by GANHacks.
+    # LeakyReLU is similar to standard ReLU, except we allow some of it to
+    # go through by multiplying it by alpha.
+    # f(x) = alpha * x    , x < 0
+    # f(x) = x            , x >= 0
     x = LeakyReLU(alpha=Args.alpha_G)( x )
+
     # 4x4
     x = deconv2d( x, 256 )
     # 8x8
