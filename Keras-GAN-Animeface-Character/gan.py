@@ -130,11 +130,13 @@ def build_networks():
     gen = build_gen( shape )
     # loss function doesn't seem to matter for this one, as it is not directly trained
     gen.compile(optimizer=opt, loss='binary_crossentropy')
+    print("\nGenerator Summary:")
     gen.summary()
 
     # discriminator part
     disc = build_discriminator( shape )
     disc.compile(optimizer=dopt, loss='binary_crossentropy')
+    print("\nDiscriminator Summary:")
     disc.summary()
 
     # GAN stack
@@ -145,7 +147,10 @@ def build_networks():
     result = disc( gened )
     gan = models.Model( inputs=noise, outputs=result )
     gan.compile(optimizer=opt, loss='binary_crossentropy')
+    print("\nGAN Summary:")
     gan.summary()
+
+    input("Press Enter to continue...")
 
     return gen, disc, gan
 
@@ -272,7 +277,7 @@ def run_batches(gen, disc, gan, faces, logger, itr_generator):
         # Otherwise G will only change locally and fail to escape the minima.
         #train_disc = True if g_loss < 15 else False
 
-        print( batch, "d0:{} d1:{}   g:{}".format( d_loss0, d_loss1, g_loss ) )
+        print( batch, "d0:{:.10f} d1:{:.10f} g:{:.10f}".format( d_loss0, d_loss1, g_loss ) )
 
         # save weights every 10 batches
         if batch % 10 == 0 and batch != 0 :
