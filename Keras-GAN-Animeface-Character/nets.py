@@ -101,11 +101,23 @@ def build_gen( shape ) :
         '''
         # Simpe Conv2DTranspose
         # Not good, compared to upsample + conv2d below.
+
+        # Run the input through transposed 2D Convolution (deconvolution), with:
+        # - filters number of output filters
+        # - Use a shape[0] x shape[1] kernel
+        # and use the kernel_initializer from args.py, which is currently
+        # using "glorot_uniform".
         x= Conv2DTranspose( filters, shape, padding='same',
             strides=(2, 2), kernel_initializer=Args.kernel_initializer )(x)
 
         # simple and works
+        # UpSampling2D repeats the rows and columns of the data by size[0] and
+        # size[1], respectively.
         #x = UpSampling2D( (2, 2) )( x )
+
+        # Conv2D runs the inputs through 2D convolution with:
+        # - filters number of output filters
+        # - Use a shape[0] by shape[1] kernel
         #x = Conv2D( filters, shape, padding='same' )( x )
 
         # Bilinear2x... Not sure if it is without bug, not tested yet.
@@ -126,7 +138,7 @@ def build_gen( shape ) :
     # 1x1x256
     # noise is not useful for generating images.
 
-    # 02. Run the input through 2D Convolution, with:
+    # 02. Run the input through transposed 2D Convolution (deconvolution), with:
     # - 512 output filters
     # - Use a 4 x 4 kernel
     # and use the kernel_initializer from args.py, which is currently

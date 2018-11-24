@@ -229,7 +229,7 @@ def train_gan( dataf ) :
     # buffering = 1 to flush to file after every line.
     with h5py.File( dataf, 'r' ) as f, open("loss.csv", "a", buffering=1) as logger :
         faces = f.get( 'faces' )
-        run_batches(gen, disc, gan, faces, logger, range(5000))
+        run_batches(gen, disc, gan, faces, logger, range(100000))
     # logger.on_train_end()
 
 

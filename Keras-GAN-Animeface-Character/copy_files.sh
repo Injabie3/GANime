@@ -51,4 +51,8 @@ cp anim/frame_00009751.png data_to_move/
 
 cp anim/frame_00009999.png data_to_move/
 
+cp args.py data_to_move/
+cp nets.py data_to_move/
+cp gan.py data_to_move/
+
 cp loss.csv data_to_move/
