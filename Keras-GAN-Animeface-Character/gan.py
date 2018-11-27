@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+from datetime import datetime
 import sys
 import numpy as np
 import random
@@ -224,7 +225,7 @@ def train_gan( dataf ) :
 
     # CSVLogger doesn't work standalone, use standard files
     with open("loss.csv", "w") as logger:
-        logger.write("batch, d_loss0, d_loss1, g_loss\n")
+        logger.write("time, batch, d_loss0, d_loss1, g_loss\n")
 
     # buffering = 1 to flush to file after every line.
     with h5py.File( dataf, 'r' ) as f, open("loss.csv", "a", buffering=1) as logger :
@@ -277,13 +278,16 @@ def run_batches(gen, disc, gan, faces, logger, itr_generator):
         # Otherwise G will only change locally and fail to escape the minima.
         #train_disc = True if g_loss < 15 else False
 
-        print( batch, "d0:{:.10f} d1:{:.10f} g:{:.10f}".format( d_loss0, d_loss1, g_loss ) )
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+              batch, "d0:{:.10f} d1:{:.10f} g:{:.10f}".format( d_loss0, d_loss1, g_loss ))
 
         # save weights every 10 batches
         if batch % 10 == 0 and batch != 0 :
             end_of_batch_task(batch, gen, disc, reals, fakes)
             row = {"d_loss0": d_loss0, "d_loss1": d_loss1, "g_loss": g_loss}
-            logger.write("{}, {}, {}, {}\n".format(batch, d_loss0, d_loss1, g_loss))
+            logger.write("{}, {}, {}, {}, {}\n"
+                         .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                 batch, d_loss0, d_loss1, g_loss))
             #logger.on_epoch_end(batch, row
 
 
