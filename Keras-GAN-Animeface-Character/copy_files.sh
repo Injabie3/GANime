@@ -56,3 +56,5 @@ cp nets.py data_to_move/
 cp gan.py data_to_move/
 
 cp loss.csv data_to_move/
+cp gen.hdf5 data_to_move/
+cp disc.hdf5 data_to_move/
