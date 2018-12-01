@@ -315,6 +315,8 @@ def end_of_batch_task(batch, gen, disc, reals, fakes):
         # recursion to surely save everything haha
         end_of_batch_task(batch, gen, disc, reals, fakes)
         raise
+    except: # All other exceptions
+        print("Unable to save, skipping")
 
 
 
