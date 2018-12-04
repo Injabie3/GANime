@@ -249,6 +249,8 @@ def run_batches(gen, disc, gan, faces, logger, itr_generator):
         # My dataset works without this.
         #reals += 0.5 * np.exp(-batch/100) * np.random.normal( size=reals.shape )
 
+        print("FakeLabel: {}, FakeSample: {}, RealLabel: {}, RealSample: {}".format(lbl_fake, fakes, lbl_real, real))
+
         if batch % 10 == 0 :
             if len(history) > Args.history_sz:
                 history.pop(0) # evict oldest
@@ -259,7 +261,7 @@ def run_batches(gen, disc, gan, faces, logger, itr_generator):
         d_loss1 = disc.train_on_batch( reals, lbl_real )
         d_loss0 = disc.train_on_batch( fakes, lbl_fake )
         gen.trainable = True
-       
+
         #if d_loss1 > 15.0 or d_loss0 > 15.0 :
         # artificial training of one of G or D based on
         # statistics is not good at all.
