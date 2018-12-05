@@ -240,8 +240,8 @@ def run_batches(gen, disc, gan, faces, logger, itr_generator):
     train_disc = True
     for batch in itr_generator:
         # Using soft labels here.
-        lbl_fake = Args.label_noise * np.random.ranf(Args.batch_sz)
-        lbl_real = 1 - Args.label_noise * np.random.ranf(Args.batch_sz)
+        lbl_fake = 1 - Args.label_noise * np.random.ranf(Args.batch_sz)
+        lbl_real = Args.label_noise * np.random.ranf(Args.batch_sz)
 
         fakes, noises = sample_fake( gen )
         reals = sample_faces( faces )
@@ -249,7 +249,8 @@ def run_batches(gen, disc, gan, faces, logger, itr_generator):
         # My dataset works without this.
         #reals += 0.5 * np.exp(-batch/100) * np.random.normal( size=reals.shape )
 
-        print("FakeLabel: {}, FakeSample: {}, RealLabel: {}, RealSample: {}".format(lbl_fake, fakes, lbl_real, reals))
+        # print(" RealLabel: {}".format(lbl_real))
+        # print(" RealSample: {}".format(reals))
 
         if batch % 10 == 0 :
             if len(history) > Args.history_sz:
