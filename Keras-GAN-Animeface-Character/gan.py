@@ -249,7 +249,7 @@ def run_batches(gen, disc, gan, faces, logger, itr_generator):
         # My dataset works without this.
         #reals += 0.5 * np.exp(-batch/100) * np.random.normal( size=reals.shape )
 
-        print("FakeLabel: {}, FakeSample: {}, RealLabel: {}, RealSample: {}".format(lbl_fake, fakes, lbl_real, real))
+        print("FakeLabel: {}, FakeSample: {}, RealLabel: {}, RealSample: {}".format(lbl_fake, fakes, lbl_real, reals))
 
         if batch % 10 == 0 :
             if len(history) > Args.history_sz:
