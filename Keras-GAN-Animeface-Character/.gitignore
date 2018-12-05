@@ -87,3 +87,5 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+Keras-GAN-Animeface-Character/animeface-character-dataset/
