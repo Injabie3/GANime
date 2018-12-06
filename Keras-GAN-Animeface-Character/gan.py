@@ -249,7 +249,7 @@ def run_batches(gen, disc, gan, faces, logger, itr_generator):
         # My dataset works without this.
         #reals += 0.5 * np.exp(-batch/100) * np.random.normal( size=reals.shape )
 
-        # print(" RealLabel: {}".format(lbl_real))
+        print(" RealLabel: {}".format(lbl_real))
         # print(" RealSample: {}".format(reals))
 
         if batch % 10 == 0 :
